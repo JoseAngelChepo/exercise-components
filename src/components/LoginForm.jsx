@@ -43,7 +43,7 @@ const LoginForm = () => {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #fff;
+            background-color:rgb(238, 238, 238);
             color: #000;
             padding: 50px;
             border-radius: 14px;
@@ -51,11 +51,11 @@ const LoginForm = () => {
             animation: fadeIn 1s ease-out forwards;
           }
           .text-title {
-            font-size: 28px;
+            font-size: clamp(1.1rem, 2.5vw, 2rem);
             margin: 5px;
           }
           .text-subtitle {
-            font-size: 16px;
+            font-size: clamp(.9rem, 1.8vw, 1.2rem);
             margin: 5px 0px 50px 0px;
           }
           .input-container {
@@ -73,7 +73,7 @@ const LoginForm = () => {
             height: 35px;
             border: none;
             border-radius: 9px;
-            background-color:rgb(222, 222, 222);
+            background-color: #ffffff;
             outline: none;
             color:rgb(62, 62, 62);
             padding: 0px 5px;
@@ -95,6 +95,9 @@ const LoginForm = () => {
             display: flex;
             justify-content: center;
             align-items: center;
+            border-radius: 9px;
+            color: white;
+            font-weight: 600;
           }
           .button-login:hover {
             border: none;
@@ -112,10 +115,9 @@ const LoginForm = () => {
           }
           @media (max-width: 768px) {
             .login-form-container {
-               padding: 20px;
+              padding: 20px;
             }
             .text-subtitle {
-              font-size: 16px;
               margin-bottom: 20px;
             }
           }

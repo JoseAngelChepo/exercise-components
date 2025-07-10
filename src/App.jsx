@@ -1,19 +1,22 @@
 import './App.css'
+import Examples from './components/Examples';
 import ContainerFlexbox from './components/ContainerFlexbox';
 import LoginForm from './components/LoginForm';
 import SignUpForm from './components/SignUpForm';
+import ExampleCard from './components/ExampleCard';
+import ExerciseTailwind from './components/ExerciseTailwind';
 
 function App() {
   // empieza código
   // termina código
   return (
     <>
-      {/* empieza contenido */}
-      {/* <h1>Flexbox + Grid</h1>
-      <ContainerFlexbox /> */}
-      {/* termina contenido */}
-      {/* empieza css */}
-      <LoginForm />
+      <h1>Ejemplos</h1>
+      <ExerciseTailwind />
+      {/* <Examples /> */}
+      {/* <ContainerFlexbox /> */}
+      {/* <ExampleCard /> */}
+      {/* <LoginForm /> */}
       {/* <SignUpForm /> */}
       <style jsx>
         {`
