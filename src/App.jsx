@@ -1,5 +1,7 @@
 import './App.css'
-import ContainerFlexbox from './components/ContainerFlexbox'
+import ContainerFlexbox from './components/ContainerFlexbox';
+import LoginForm from './components/LoginForm';
+import SignUpForm from './components/SignUpForm';
 
 function App() {
   // empieza código
@@ -7,10 +9,12 @@ function App() {
   return (
     <>
       {/* empieza contenido */}
-      <h1>Flexbox + Grid</h1>
-      <ContainerFlexbox />
+      {/* <h1>Flexbox + Grid</h1>
+      <ContainerFlexbox /> */}
       {/* termina contenido */}
       {/* empieza css */}
+      <LoginForm />
+      {/* <SignUpForm /> */}
       <style jsx>
         {`
         `}
