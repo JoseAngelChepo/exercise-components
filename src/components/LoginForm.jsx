@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import Loader from './Loader';
+import { useServices } from '../providers/ServicesProvider';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('')
+  const { login } = useServices();
 
   const signIn = () => {
     setIsLoading(true)
-    // llamar peticion de login
     setTimeout(() => {
-      console.log("Regreso resultado de login ")
+      const timestamp = Date.now();
+      login(email, timestamp)
       setIsLoading(false)
     }, 2000)
   }
@@ -19,11 +23,11 @@ const LoginForm = () => {
         <p className="text-subtitle">Acceso de usuarios</p>
         <div className="input-container">
           <label>Correo electrónico</label>
-          <input type="text" />
+          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
         </div>
         <div className="input-container">
           <label>Contraseña</label>
-          <input type="text" />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         </div>
         {isLoading
           ? (
@@ -98,6 +102,7 @@ const LoginForm = () => {
             border-radius: 9px;
             color: white;
             font-weight: 600;
+            cursor: pointer;
           }
           .button-login:hover {
             border: none;
