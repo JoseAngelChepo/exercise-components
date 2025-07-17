@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import Loader from './Loader';
-import { useServices } from '../providers/ServicesProvider';
+import useAuth from '../store/useAuth';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
-  const { login } = useServices();
+  const { login } = useAuth();
 
   const signIn = () => {
     setIsLoading(true)

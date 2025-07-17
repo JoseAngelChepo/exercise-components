@@ -6,10 +6,10 @@ import SignUpForm from './components/SignUpForm';
 import ExampleCard from './components/ExampleCard';
 import ExerciseTailwind from './components/ExerciseTailwind';
 import ThemeSelector from './components/ThemeSelector.jsx';
-import { useServices } from './providers/ServicesProvider';
+import useAuth from './store/useAuth';
 
 function App() {
-  const { user, token, logout } = useServices();
+  const { user, token, logout } = useAuth();
   return (
     <>
       <ThemeSelector />
