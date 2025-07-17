@@ -6,10 +6,18 @@ import SignUpForm from './components/SignUpForm';
 import ExampleCard from './components/ExampleCard';
 import ExerciseTailwind from './components/ExerciseTailwind';
 import ThemeSelector from './components/ThemeSelector.jsx';
-import useAuth from './store/useAuth';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from './store/authSlice.jsx';
+
 
 function App() {
-  const { user, token, logout } = useAuth();
+  const dispatch = useDispatch()
+  const { user, token } = useSelector((state) => state.auth)
+
+
+  const handleLogout = () => {
+    dispatch(logout())
+  }
   return (
     <>
       <ThemeSelector />
@@ -20,7 +28,7 @@ function App() {
           <div className='container-user'>
             <p>User: {user}</p>
             <p>Token: {token}</p>
-            <button className="button-logout" onClick={() => logout()}>Cerrar sesión</button>
+            <button className="button-logout" onClick={() => handleLogout()}>Cerrar sesión</button>
           </div>
         )}
       {/* <SignUpForm /> */}

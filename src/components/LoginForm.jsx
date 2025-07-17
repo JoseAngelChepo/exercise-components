@@ -1,18 +1,22 @@
 import { useState } from 'react';
 import Loader from './Loader';
-import useAuth from '../store/useAuth';
+import { useDispatch } from 'react-redux';
+import { login } from '../store/authSlice'
 
 const LoginForm = () => {
+  const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
-  const { login } = useAuth();
 
   const signIn = () => {
     setIsLoading(true)
     setTimeout(() => {
       const timestamp = Date.now();
-      login(email, timestamp)
+      dispatch(login({
+        userData: email,
+        authToken: timestamp
+      }))
       setIsLoading(false)
     }, 2000)
   }
