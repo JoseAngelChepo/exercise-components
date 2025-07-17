@@ -12,7 +12,7 @@ import { logout } from './store/authSlice.jsx';
 
 function App() {
   const dispatch = useDispatch()
-  const { user, token } = useSelector((state) => state.auth)
+  const { user, token, role } = useSelector((state) => state.auth)
 
 
   const handleLogout = () => {
@@ -28,6 +28,7 @@ function App() {
           <div className='container-user'>
             <p>User: {user}</p>
             <p>Token: {token}</p>
+            <p>Role: {role}</p>
             <button className="button-logout" onClick={() => handleLogout()}>Cerrar sesión</button>
           </div>
         )}

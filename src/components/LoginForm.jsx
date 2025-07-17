@@ -1,24 +1,37 @@
 import { useState } from 'react';
 import Loader from './Loader';
-import { useDispatch } from 'react-redux';
-import { login } from '../store/authSlice'
+import { useSelector, useDispatch } from 'react-redux';
+import { 
+  login,
+  logout,
+  loginAsync,
+  clearError,
+  selectUser,
+  selectToken,
+  selectIsAuthenticated,
+  selectAuthLoading,
+  selectAuthError,
+  selectLoginAttempts
+} from '../store/authSlice'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const [isLoading, setIsLoading] = useState(false);
+
+  const user = useSelector(selectUser)
+  const token = useSelector(selectToken)
+  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const loading = useSelector(selectAuthLoading)
+  const error = useSelector(selectAuthError)
+  const loginAttemps = useSelector(selectLoginAttempts)
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
 
   const signIn = () => {
-    setIsLoading(true)
-    setTimeout(() => {
-      const timestamp = Date.now();
-      dispatch(login({
-        userData: email,
-        authToken: timestamp
-      }))
-      setIsLoading(false)
-    }, 2000)
+    dispatch(loginAsync({
+      email: email,
+      password: password
+    }))
   }
   return (
     <>
@@ -33,7 +46,7 @@ const LoginForm = () => {
           <label>Contraseña</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
         </div>
-        {isLoading
+        {loading
           ? (
             <div className='loader-container'>
               <Loader />
@@ -44,6 +57,8 @@ const LoginForm = () => {
             </button>
           )
         }
+        {error}
+        {loginAttemps}
       </div>
       <style jsx>
         {`
