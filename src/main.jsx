@@ -6,13 +6,14 @@ import { ThemeProvider } from './providers/ThemeProvider.jsx'
 import { ServicesProvider } from './providers/ServicesProvider.jsx'
 import { Provider } from 'react-redux'
 import { store } from './store/store'
+import Router from './router'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
       <ServicesProvider>
         <Provider store={store}>
-          <App />
+          <Router />
         </Provider>
       </ServicesProvider>
     </ThemeProvider>

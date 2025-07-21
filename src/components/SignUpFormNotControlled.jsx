@@ -1,41 +1,77 @@
-import { useState } from 'react';
+import { useRef } from 'react';
 import Loader from './Loader';
 
-const SignUpForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
+const SignUpFormNotControlled = (props) => {
+  const { isLoading, signUp } = props;
+  const nameRef = useRef();
+  const lastNameRef = useRef();
+  const emailRef = useRef(); 
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
 
-  const signIn = () => {
-    setIsLoading(true)
-    // llamar peticion de login
-    setTimeout(() => {
-      console.log("Regreso resultado de login ")
-      setIsLoading(false)
-    }, 2000)
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      name: nameRef.current.value,
+      lastName: lastNameRef.current.value,
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+      confirmPassword: confirmPasswordRef.current.value,
+    }
+    signUp(data)
   }
   return (
-    <>
-      <div className="login-form-container">
+     <>
+      <form 
+        className="login-form-container"
+        onSubmit={handleSubmit}
+      >
         <h2 className="text-title">Registro</h2>
         <p className="text-subtitle">Registro de usuarios</p>
         <div className="input-container">
           <label>Nombre</label>
-          <input type="text" />
+          <input
+            name="name"
+            type="text"
+            placeholder="Nombre"
+            ref={nameRef}
+          />
         </div>
         <div className="input-container">
           <label>Apellidos</label>
-          <input type="text" />
+          <input
+            name="lastName"
+            type="text"
+            placeholder="Apellido(s)"
+            ref={lastNameRef}
+          />
         </div>
         <div className="input-container">
           <label>Correo electrónico</label>
-          <input type="text" />
+          <input
+            name="email"
+            type="email"
+            placeholder="email@gmail.com"
+            ref={emailRef}
+          />
         </div>
         <div className="input-container">
           <label>Contraseña</label>
-          <input type="text" />
+          <input
+            name="password"
+            type="password"
+            placeholder="Contraseña"
+            ref={passwordRef}
+          />
         </div>
         <div className="input-container">
           <label>Confirmar contraseña</label>
-          <input type="text" />
+          <input
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirmar contraseña"
+            ref={confirmPasswordRef}
+          />
         </div>
         {isLoading
           ? (
@@ -43,12 +79,12 @@ const SignUpForm = () => {
               <Loader />
             </div>
           ) : (
-            <button className="button-login" onClick={() => signIn()}>
+            <button className="button-login" type="submit">
               Registrarse
             </button>
           )
         }
-      </div>
+      </form>
       <style jsx>
         {`
           .login-form-container {
@@ -57,7 +93,6 @@ const SignUpForm = () => {
             align-items: center;
             background-color:rgb(238, 238, 238);
             color: #000;
-            padding: 50px;
             border-radius: 14px;
             opacity: 0;
             animation: fadeIn 1s ease-out forwards;
@@ -68,13 +103,13 @@ const SignUpForm = () => {
           }
           .text-subtitle {
             font-size: clamp(.9rem, 1.8vw, 1.2rem);
-            margin: 5px 0px 50px 0px;
+            margin: 5px 0px 0px 0px;
           }
           .input-container {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            margin: 10px 0px;
+            margin: 8px 0px;
           }
           .input-container label {
             font-size: 16px;
@@ -139,4 +174,4 @@ const SignUpForm = () => {
   )
 }
 
-export default SignUpForm;
+export default SignUpFormNotControlled;

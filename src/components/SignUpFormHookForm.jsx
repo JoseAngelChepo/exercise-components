@@ -1,75 +1,90 @@
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Loader from './Loader';
-import { useSelector, useDispatch } from 'react-redux';
-import { 
-  login,
-  logout,
-  loginAsync,
-  clearError,
-  selectUser,
-  selectToken,
-  selectIsAuthenticated,
-  selectAuthLoading,
-  selectAuthError,
-  selectLoginAttempts
-} from '../store/authSlice'
 
-const LoginForm = () => {
-  const dispatch = useDispatch()
+const SignUpFormHookForm = (props) => {
+  const { isLoading, signUp } = props;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm();
 
-  const user = useSelector(selectUser)
-  const token = useSelector(selectToken)
-  const isAuthenticated = useSelector(selectIsAuthenticated)
-  const loading = useSelector(selectAuthLoading)
-  const error = useSelector(selectAuthError)
-  const loginAttemps = useSelector(selectLoginAttempts)
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
-
-  const signIn = () => {
-    dispatch(loginAsync({
-      email: email,
-      password: password
-    }))
+  const onSubmit = (data) => {
+    signUp(data)
   }
+
   return (
     <>
-      <div className="login-form-container">
-        <h2 className="text-title">Iniciar sesión</h2>
-        <p className="text-subtitle">Acceso de usuarios</p>
+      <form 
+        className="login-form-container"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <h2 className="text-title">Registro</h2>
+        <p className="text-subtitle">Registro de usuarios</p>
+        <div className="input-container">
+          <label>Nombre</label>
+          <input
+            { ...register("name", { required: "Nombre requerido" }) }
+            placeholder="Nombre"
+          />
+          {errors.name && <p className='error-text'>{errors.name.message}</p>}
+        </div>
+        <div className="input-container">
+          <label>Apellidos</label>
+          <input
+            { ...register("lastName", { required: "Apellido(s) requerido(s)" }) }
+            placeholder="Apellido(s)"
+          />
+          {errors.lastName && <p className='error-text'>{errors.lastName.message}</p>}
+        </div>
         <div className="input-container">
           <label>Correo electrónico</label>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+          <input
+            type="email"
+            { ...register("email", { required: "Correo requerido", pattern: { value: /^\S+@\S+$/i, message: "Correo inválido" } }) }
+            placeholder="email@gmail.com"
+          />
+          {errors.email && <p className='error-text'>{errors.email.message}</p>}
         </div>
         <div className="input-container">
           <label>Contraseña</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <input
+            type="password"
+            { ...register("password", { required: "Contraseña requerida" }) }
+            placeholder="Contraseña"
+          />
+          {errors.password && <p className='error-text'>{errors.password.message}</p>}
         </div>
-        {loading
+        <div className="input-container">
+          <label>Confirmar contraseña</label>
+          <input
+            type="password"
+            { ...register("confirmPassword", { required: "Confirmar contraseña requerido" }) }
+            placeholder="Confirmar contraseña"
+          />
+          {errors.confirmPassword && <p className='error-text'>{errors.confirmPassword.message}</p>}
+        </div>
+        {isLoading
           ? (
             <div className='loader-container'>
               <Loader />
             </div>
           ) : (
-            <button className="button-login" onClick={() => signIn()}>
-              Iniciar sesión
+            <button className="button-login" type="submit">
+              Registrarse
             </button>
           )
         }
-        {error}
-        {loginAttemps}
-      </div>
+      </form>
       <style jsx>
         {`
           .login-form-container {
-            max-width: 300px;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color:rgb(238, 238, 238);
             color: #000;
-            padding: 50px;
+            padding: 20px;
             border-radius: 14px;
             opacity: 0;
             animation: fadeIn 1s ease-out forwards;
@@ -80,13 +95,13 @@ const LoginForm = () => {
           }
           .text-subtitle {
             font-size: clamp(.9rem, 1.8vw, 1.2rem);
-            margin: 5px 0px 50px 0px;
+            margin: 5px 0px 0px 0px;
           }
           .input-container {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            margin: 10px 0px;
+            margin: 8px 0px;
           }
           .input-container label {
             font-size: 16px;
@@ -122,11 +137,16 @@ const LoginForm = () => {
             border-radius: 9px;
             color: white;
             font-weight: 600;
-            cursor: pointer;
           }
           .button-login:hover {
             border: none;
             background-color:rgb(105, 104, 104);
+          }
+          .error-text {
+            font-size: 0.8em;
+            color: red;
+            font-weight: 600;
+            margin: 0px;
           }
           @keyframes fadeIn {
             from {
@@ -143,7 +163,7 @@ const LoginForm = () => {
               padding: 20px;
             }
             .text-subtitle {
-              margin-bottom: 20px;
+              margin-bottom:  10px;
             }
           }
         `}
@@ -152,4 +172,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm;
+export default SignUpFormHookForm

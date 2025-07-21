@@ -1,75 +1,112 @@
 import { useState } from 'react';
 import Loader from './Loader';
-import { useSelector, useDispatch } from 'react-redux';
-import { 
-  login,
-  logout,
-  loginAsync,
-  clearError,
-  selectUser,
-  selectToken,
-  selectIsAuthenticated,
-  selectAuthLoading,
-  selectAuthError,
-  selectLoginAttempts
-} from '../store/authSlice'
+const initialData = {
+  name: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: ''
+}
 
-const LoginForm = () => {
-  const dispatch = useDispatch()
+const SignUpFormControlled = (props) => {
+  const { isLoading, signUp } = props;
+  const [formData, setFormData] = useState(initialData)
 
-  const user = useSelector(selectUser)
-  const token = useSelector(selectToken)
-  const isAuthenticated = useSelector(selectIsAuthenticated)
-  const loading = useSelector(selectAuthLoading)
-  const error = useSelector(selectAuthError)
-  const loginAttemps = useSelector(selectLoginAttempts)
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+    if (e.target.name === "confirmPassword") {
+      if (formData.password.length === e.target.value.length &&
+        formData.password !== e.target.value) {
+        alert("Error: Las contraseñas no coinciden")
+      }
+    }
+  }
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
-
-  const signIn = () => {
-    dispatch(loginAsync({
-      email: email,
-      password: password
-    }))
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    signUp(formData)
   }
   return (
     <>
-      <div className="login-form-container">
-        <h2 className="text-title">Iniciar sesión</h2>
-        <p className="text-subtitle">Acceso de usuarios</p>
+      <form 
+        className="login-form-container"
+        onSubmit={handleSubmit}
+      >
+        <h2 className="text-title">Registro</h2>
+        <p className="text-subtitle">Registro de usuarios</p>
+        <div className="input-container">
+          <label>Nombre</label>
+          <input
+            name="name"
+            type="text"
+            placeholder="Nombre"
+            value={formData.name}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="input-container">
+          <label>Apellidos</label>
+          <input
+            name="lastName"
+            type="text"
+            placeholder="Apellido(s)"
+            value={formData.lastName}
+            onChange={handleChange}
+          />
+        </div>
         <div className="input-container">
           <label>Correo electrónico</label>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+          <input
+            name="email"
+            type="email"
+            placeholder="email@gmail.com"
+            value={formData.email}
+            onChange={handleChange}
+          />
         </div>
         <div className="input-container">
           <label>Contraseña</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <input
+            name="password"
+            type="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+          />
         </div>
-        {loading
+        <div className="input-container">
+          <label>Confirmar contraseña</label>
+          <input
+            name="confirmPassword"
+            type="password"
+            placeholder="Confirmar contraseña"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+        </div>
+        {isLoading
           ? (
             <div className='loader-container'>
               <Loader />
             </div>
           ) : (
-            <button className="button-login" onClick={() => signIn()}>
-              Iniciar sesión
+            <button className="button-login" type="submit">
+              Registrarse
             </button>
           )
         }
-        {error}
-        {loginAttemps}
-      </div>
+      </form>
       <style jsx>
         {`
           .login-form-container {
-            max-width: 300px;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color:rgb(238, 238, 238);
             color: #000;
-            padding: 50px;
             border-radius: 14px;
             opacity: 0;
             animation: fadeIn 1s ease-out forwards;
@@ -80,13 +117,13 @@ const LoginForm = () => {
           }
           .text-subtitle {
             font-size: clamp(.9rem, 1.8vw, 1.2rem);
-            margin: 5px 0px 50px 0px;
+            margin: 5px 0px 0px 0px;
           }
           .input-container {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            margin: 10px 0px;
+            margin: 8px 0px;
           }
           .input-container label {
             font-size: 16px;
@@ -122,7 +159,6 @@ const LoginForm = () => {
             border-radius: 9px;
             color: white;
             font-weight: 600;
-            cursor: pointer;
           }
           .button-login:hover {
             border: none;
@@ -152,4 +188,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm;
+export default SignUpFormControlled;
