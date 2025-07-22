@@ -3,27 +3,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import Loader from './Loader';
 
-const checkEmailExists = async (email) => {
-  console.log('Validando existencia')
-  const takenEmails = ['angel@sellebrate.ai', 'email@email.com']
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  return takenEmails.includes(email)
-}
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const schemeSignIn = yup.object({
   email: yup.string()
     .matches(emailRegex, 'Correo inválido')
-    .required('Correo requerido')
-    .test(
-      'emails-exists',
-      'Este correo ya está registrado',
-      async (value) => {
-        if (!value) return false
-        const exists = await checkEmailExists(value)
-        return !exists
-      }
-    ),
+    .required('Correo requerido'),
   password: yup.string()
     .required('Contraseña requerida')
 })
@@ -33,7 +18,7 @@ const LoginForm = (props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm({ 
     resolver: yupResolver(schemeSignIn)
   })
@@ -56,7 +41,6 @@ const LoginForm = (props) => {
             { ...register("email") }
             placeholder='email@email.com'
           />
-          {isSubmitting && <p className='error-text'>{"Validando"}</p>}
           {errors.email && <p className='error-text'>{errors.email.message}</p>}
         </div>
         <div className="input-container">

@@ -8,13 +8,29 @@ import SignUpFormHookFormZod from '../components/SignUpFormHookFormZod';
 const SignUpFormContainer = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const signUp = (data) => {
+  const signUp = async (data) => {
+    console.log(data)
     setIsLoading(true)
-    // llamar peticion de login
-    setTimeout(() => {
-      console.log("Enviando datos a servidor...")
+    const baseUrl = 'http://localhost:5001/api/auth/register'
+    try {
+      const response = await fetch(baseUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      if (!response.ok) {
+        console.log('Error http:', response.status)
+      }
+      console.log(response)
+      const content = await response.json();
+      console.log(content)
       setIsLoading(false)
-    }, 2000)
+    } catch (error) {
+      console.log('Error red:', error.message)
+      setIsLoading(false)
+    }
   }
   return (
     <SignUpFormHookFormZod
