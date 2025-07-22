@@ -1,62 +1,66 @@
 import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
 import Loader from './Loader';
 
-const checkEmailExists = async (email) => {
-  console.log('Validando existencia')
-  const takenEmails = ['angel@sellebrate.ai', 'email@email.com']
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  return takenEmails.includes(email)
-}
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const schemeSignIn = yup.object({
-  email: yup.string()
-    .matches(emailRegex, 'Correo inválido')
-    .required('Correo requerido')
-    .test(
-      'emails-exists',
-      'Este correo ya está registrado',
-      async (value) => {
-        if (!value) return false
-        const exists = await checkEmailExists(value)
-        return !exists
-      }
-    ),
-  password: yup.string()
-    .required('Contraseña requerida')
+const schemaSignUp = z.object({
+  name: z.string().min(1, 'Nombre requerido'),
+  lastName: z.string().min(1, 'Apellido(s) requerido(s)'),
+  email: z.string().regex(emailRegex, 'Correo inválido').min(1, 'Contraseña requerida'),
+  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
+  confirmPassword: z.string().min(1, 'Confirmar contraseña es requerido')
+}).refine((data) => data.password === data.confirmPassword, {
+  message: 'Las constraseñas deben de coincidir',
+  path: ['confirmPassword']
 })
 
-const LoginForm = (props) => {
-  const { isLoading, signIn } = props;
+const SignUpFormHookFormZod = (props) => {
+  const { isLoading, signUp } = props;
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = useForm({ 
-    resolver: yupResolver(schemeSignIn)
-  })
+    formState: { errors }
+  } = useForm({
+    resolver: zodResolver(schemaSignUp)
+  });
 
   const onSubmit = (data) => {
-    signIn(data)
+    signUp(data)
   }
+
   return (
     <>
-      <form
+      <form 
         className="login-form-container"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h2 className="text-title">Iniciar sesión</h2>
-        <p className="text-subtitle">Acceso de usuarios</p>
+        <h2 className="text-title">Registro</h2>
+        <p className="text-subtitle">Registro de usuarios</p>
+        <div className="input-container">
+          <label>Nombre</label>
+          <input
+            { ...register("name") }
+            placeholder="Nombre"
+          />
+          {errors.name && <p className='error-text'>{errors.name.message}</p>}
+        </div>
+        <div className="input-container">
+          <label>Apellidos</label>
+          <input
+            { ...register("lastName") }
+            placeholder="Apellido(s)"
+          />
+          {errors.lastName && <p className='error-text'>{errors.lastName.message}</p>}
+        </div>
         <div className="input-container">
           <label>Correo electrónico</label>
-          <input 
+          <input
             type="email"
             { ...register("email") }
-            placeholder='email@email.com'
+            placeholder="email@gmail.com"
           />
-          {isSubmitting && <p className='error-text'>{"Validando"}</p>}
           {errors.email && <p className='error-text'>{errors.email.message}</p>}
         </div>
         <div className="input-container">
@@ -68,6 +72,15 @@ const LoginForm = (props) => {
           />
           {errors.password && <p className='error-text'>{errors.password.message}</p>}
         </div>
+        <div className="input-container">
+          <label>Confirmar contraseña</label>
+          <input
+            type="password"
+            { ...register("confirmPassword") }
+            placeholder="Confirmar contraseña"
+          />
+          {errors.confirmPassword && <p className='error-text'>{errors.confirmPassword.message}</p>}
+        </div>
         {isLoading
           ? (
             <div className='loader-container'>
@@ -75,7 +88,7 @@ const LoginForm = (props) => {
             </div>
           ) : (
             <button className="button-login" type="submit">
-              Iniciar sesión
+              Registrarse
             </button>
           )
         }
@@ -83,13 +96,12 @@ const LoginForm = (props) => {
       <style jsx>
         {`
           .login-form-container {
-            max-width: 300px;
             display: flex;
             flex-direction: column;
             align-items: center;
             background-color:rgb(238, 238, 238);
             color: #000;
-            padding: 50px;
+            padding: 20px;
             border-radius: 14px;
             opacity: 0;
             animation: fadeIn 1s ease-out forwards;
@@ -100,20 +112,20 @@ const LoginForm = (props) => {
           }
           .text-subtitle {
             font-size: clamp(.9rem, 1.8vw, 1.2rem);
-            margin: 5px 0px 50px 0px;
+            margin: 5px 0px 0px 0px;
           }
           .input-container {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            margin: 10px 0px;
+            margin: 8px 0px;
           }
           .input-container label {
             font-size: 16px;
           }
           .input-container input {
             font-size: 16px;
-            width: 250px;
+            width: 300px;
             height: 35px;
             border: none;
             border-radius: 9px;
@@ -142,7 +154,6 @@ const LoginForm = (props) => {
             border-radius: 9px;
             color: white;
             font-weight: 600;
-            cursor: pointer;
           }
           .button-login:hover {
             border: none;
@@ -169,7 +180,7 @@ const LoginForm = (props) => {
               padding: 20px;
             }
             .text-subtitle {
-              margin-bottom: 20px;
+              margin-bottom:  10px;
             }
           }
         `}
@@ -178,4 +189,4 @@ const LoginForm = (props) => {
   )
 }
 
-export default LoginForm;
+export default SignUpFormHookFormZod
