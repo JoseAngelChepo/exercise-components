@@ -1,6 +1,13 @@
 import { Link, Outlet } from 'react-router-dom';
+import { RiLogoutCircleRLine } from "react-icons/ri";
+import { useServices } from '../data/providers/ServicesProvider';
 
 const Dashboard = () => {
+  const { logout } = useServices();
+  
+  const closeSession = () => {
+    logout();
+  }
   return (
     <>
       <div className='container-dashboard'> 
@@ -13,6 +20,10 @@ const Dashboard = () => {
             <Link to='/dashboard/settings' className='link-header'>
               Settings
             </Link>
+            <button className='button-logout' onClick={() => closeSession()}>
+              <RiLogoutCircleRLine />
+              Cerrar sesión
+            </button>
           </div>
         </div>
         <Outlet />
@@ -40,6 +51,15 @@ const Dashboard = () => {
             padding: 10px 10px;
             margin: 10px;
             font-weight: 600;
+            cursor: pointer;
+          }
+          .button-logout {
+            display: flex;
+            align-items: center;
+            padding: 10px 10px;
+            margin: 10px;
+            font-weight: 600;
+            gap: 10px;
             cursor: pointer;
           }
         `}

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useServices } from '../data/providers/ServicesProvider';
+import { useNavigate } from 'react-router-dom';
 import SignUpFormControlled from "../components/SignUpFormControlled";
 import SignUpFormNotControlled from "../components/SignUpFormNotControlled";
 import SignUpFormHookForm from "../components/SignUpFormHookForm";
@@ -7,30 +9,18 @@ import SignUpFormHookFormZod from '../components/SignUpFormHookFormZod';
 
 const SignUpFormContainer = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { register } = useServices();
+  const navigate = useNavigate()
 
-  const signUp = async (data) => {
-    console.log(data)
+  const signUp = (data) => {
     setIsLoading(true)
-    const baseUrl = 'http://localhost:5001/api/auth/register'
-    try {
-      const response = await fetch(baseUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+    register(data)
+      .then(res => {
+        if (res) {
+          navigate('/login')
+        }
+        setIsLoading(false)
       })
-      if (!response.ok) {
-        console.log('Error http:', response.status)
-      }
-      console.log(response)
-      const content = await response.json();
-      console.log(content)
-      setIsLoading(false)
-    } catch (error) {
-      console.log('Error red:', error.message)
-      setIsLoading(false)
-    }
   }
   return (
     <SignUpFormHookFormZod

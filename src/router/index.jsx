@@ -8,23 +8,29 @@ import Analytics from '../pages/Analytics';
 import Settings from '../pages/Settings';
 import NotFound from '../pages/NotFound';
 import PrivateRoute from '../components/PrivateRoute';
+import { ToastContainer } from 'react-toastify';
+import { useServices } from '../data/providers/ServicesProvider';
 
 const Router = () => {
+  const { stateServices } = useServices()
   return (
     <BrowserRouter>
       <Suspense fallback={<div><p>Cargando...</p></div>}>
-        <Routes>
-          <Route path='/' element={<App />}/>
-          <Route path='/login' element={<Login />}/>
-          <Route path='/register' element={<Register />}/>
-          <Route element={<PrivateRoute />}>
-            <Route path='/dashboard' element={<Dashboard />}>
-              <Route path='analytics' element={<Analytics />}/>
-              <Route path='settings' element={<Settings />}/>
+        {stateServices &&
+          <Routes>
+            <Route path='/' element={<App />}/>
+            <Route path='/login' element={<Login />}/>
+            <Route path='/register' element={<Register />}/>
+            <Route element={<PrivateRoute />}>
+              <Route path='/dashboard' element={<Dashboard />}>
+                <Route path='analytics' element={<Analytics />}/>
+                <Route path='settings' element={<Settings />}/>
+              </Route>
             </Route>
-          </Route>
-          <Route path='*' element={<NotFound />}/>
-        </Routes>
+            <Route path='*' element={<NotFound />}/>
+          </Routes>
+        }
+        <ToastContainer />
       </Suspense>
     </BrowserRouter>
   )

@@ -1,25 +1,19 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { 
-  logout,
-  selectIsAuthenticated,
-} from '../store/authSlice'
+import { useServices } from '../data/providers/ServicesProvider';
 
 const PrivateRoute = () => {
-  const dispatch = useDispatch()
-  const { user, token, role } = useSelector((state) => state.auth)
-  const isAuthenticated = useSelector(selectIsAuthenticated)
+  const { token, role, logout } = useServices()
 
   const handleLogout = () => {
-    dispatch(logout())
+    logout()
   }
 
-  if (!isAuthenticated) {
+  if (token === null) {
     return <Navigate to='/login' />
   }
-  if (role !== 'admin') {
-    return <Navigate to='/unauthorized' />
-  }
+  // if (role !== 'admin') {
+  //   return <Navigate to='/unauthorized' />
+  // }
   
   return <Outlet />
 }
