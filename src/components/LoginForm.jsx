@@ -14,7 +14,7 @@ const schemeSignIn = yup.object({
 })
 
 const LoginForm = (props) => {
-  const { isLoading, signIn } = props;
+  const { isLoading, signIn, signInOIDC } = props;
   const {
     register,
     handleSubmit,
@@ -58,9 +58,21 @@ const LoginForm = (props) => {
               <Loader />
             </div>
           ) : (
-            <button className="button-login" type="submit">
-              Iniciar sesión
-            </button>
+            <>
+              <button className="button-login" type="submit">
+                Iniciar sesión
+              </button>
+              <button
+                className="button-login"
+                type="button"
+                onClick={(e) =>{
+                  e.preventDefault()
+                  signInOIDC()
+                }}
+              >
+                Iniciar sesión con OIDC
+              </button>
+            </>
           )
         }
       </form>

@@ -6,6 +6,7 @@ import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
 import Analytics from '../pages/Analytics';
 import Settings from '../pages/Settings';
+import CallbackOIDC from '../pages/CallbackOIDC';
 import NotFound from '../pages/NotFound';
 import PrivateRoute from '../components/PrivateRoute';
 import { ToastContainer } from 'react-toastify';
@@ -27,6 +28,7 @@ const Router = () => {
                 <Route path='settings' element={<Settings />}/>
               </Route>
             </Route>
+            <Route path='/callback' element={<CallbackOIDC />}/>
             <Route path='*' element={<NotFound />}/>
           </Routes>
         }

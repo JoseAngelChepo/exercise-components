@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import Services from '../api/server'
+import ServicesAuthOIDC from '../api/authOIDC'
 import handleApiError from '../../utils/handleApiError';
 import { toast } from 'react-toastify';
 
@@ -37,6 +38,34 @@ const ServicesProvider = ({ children }) => {
       })
   }
 
+  const loginOIDC = async () => {
+    return ServicesAuthOIDC.loginWithPKCE()
+      .then(res => {
+        return res
+      })
+      .catch(error => {
+        const message = handleApiError(error)
+        toast.error(message)
+        return false
+      })
+  }
+
+  const exchangeCodeForToken = async (code) => {
+    return ServicesAuthOIDC.exchangeCodeForToken(code)
+      .then(res => {
+        console.log("Autenticado con éxito!!")
+        console.log(res)
+        localStorage.setItem('token', res.access_token)
+        setToken(res.access_token)
+        return res
+      })
+      .catch(error => {
+        const message = handleApiError(error)
+        toast.error(message)
+        return false
+      })
+  }
+
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
@@ -63,6 +92,8 @@ const ServicesProvider = ({ children }) => {
     role,
     register,
     login,
+    loginOIDC,
+    exchangeCodeForToken,
     logout,
     getToken,
     getRole,

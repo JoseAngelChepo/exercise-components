@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 const LoginFormContainer = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useServices();
+  const { login, loginOIDC } = useServices();
   const navigate = useNavigate();
 
   const signIn = async (data) => {
@@ -16,10 +16,17 @@ const LoginFormContainer = () => {
     }
     setIsLoading(false)
   }
+
+  const signInOIDC = async () => {
+    setIsLoading(true)
+    const res = await loginOIDC()
+    setIsLoading(false)
+  }
   return (
     <LoginForm
       isLoading={isLoading}
       signIn={signIn}
+      signInOIDC={signInOIDC}
     />
   )
 }

@@ -7,11 +7,11 @@ import { store } from './store/store'
 import Router from './router'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <ServicesProvider>
       <Provider store={store}>
         <Router />
       </Provider>
     </ServicesProvider>
-  </StrictMode>,
+  // </StrictMode>,
 )
