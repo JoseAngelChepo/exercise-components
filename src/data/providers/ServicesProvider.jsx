@@ -85,6 +85,16 @@ const ServicesProvider = ({ children }) => {
     return !!localStorage.getItem('token');
   }
 
+  const getUser = () => {
+    return Services.getUser()
+      .then(data => data)
+      .catch(error => {
+        const message = handleApiError(error)
+        toast.error(message)
+        return false
+      })
+  }
+
   const values = { 
     stateServices,
     user,
@@ -97,7 +107,8 @@ const ServicesProvider = ({ children }) => {
     logout,
     getToken,
     getRole,
-    isAuthenticated
+    isAuthenticated,
+    getUser
   }
 
   useEffect(() => {
@@ -107,7 +118,6 @@ const ServicesProvider = ({ children }) => {
       // verificar token con mi servicio
       const resultadoDeValidacionToken = true
       if (resultadoDeValidacionToken) {
-        console.log('Se recupero token')
         setToken(storedToken)
         setRole(storedRole)
       } else {

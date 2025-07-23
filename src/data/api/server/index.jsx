@@ -20,4 +20,11 @@ Services.register = (data) => {
     })
 }
 
+Services.getUser = () => {
+  return apiServices.get('/users/me')
+    .then(res => {
+      return res.data
+    })
+}
+
 export default Services;

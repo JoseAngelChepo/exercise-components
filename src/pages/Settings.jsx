@@ -1,8 +1,8 @@
+import SettingsContainer from "../containers/SettingsContainer";
+
 const Settings = () => {
   return (
-    <>
-      <h1>Settings</h1>
-    </>
+    <SettingsContainer />
   )
 }
 
