@@ -25,9 +25,9 @@ const ChatComponent = (props) => {
           {(messages && messages.length > 0) && messages.map((message, index) => 
             <ChatBubble
               key={index}
-              side={message.sender === user.email ? 'right' : 'left'}
-              sender={message.sender}
-              message={message.text}
+              side={message.role === 'user' ? 'right' : 'left'}
+              sender={message.role}
+              message={message.content}
             />
           )}
         </div>
@@ -57,6 +57,7 @@ const ChatComponent = (props) => {
             border-radius: 9px;
             padding: 20px;
             margin: 10px 40px;
+            background-color: white;
           }
           .container-messages {
             padding: 0px 15px;

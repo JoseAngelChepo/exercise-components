@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useServices } from '../data/providers/ServicesProvider'
 import SettingsUser from '../components/SettingsUser'
+import AgentContainer from './AgentContainer'
+
 const userMock = {
   name: 'Angel',
   lastName: 'Lopez',
@@ -27,6 +29,20 @@ const SettingsContainer = () => {
       <SettingsUser
         user={user}
       />
+      <div className='container-support-chat'>
+        <AgentContainer
+          user={user}
+        />
+      </div>
+      <style jsx>
+        {`
+          .container-support-chat {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+          }
+        `}
+      </style>
     </>
   )
 }

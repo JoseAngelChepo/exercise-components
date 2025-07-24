@@ -11,7 +11,7 @@ const ChatBubble = (props) => {
           style={{ alignItems: side === 'left' ? 'start': 'end' }}
         >
           <p className="text-sender">{sender}</p>
-          <p>{message}</p>
+          <p className="text-message">{message}</p>
         </div>
       </div>
       <style jsx>
@@ -29,6 +29,9 @@ const ChatBubble = (props) => {
           .text-sender {
             font-size: 0.8rem;
             font-weight: 700;
+          }
+          .text-message {
+            font-size: 0.9rem;
           }
         `}
       </style>
