@@ -38,7 +38,7 @@ const CardAnalytics = () => {
     }
   }
   useEffect(() => {
-    loadData()
+    // loadData()
   })
   return (
     <>
